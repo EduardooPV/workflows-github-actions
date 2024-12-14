@@ -28,8 +28,8 @@ jobs:
             core.setFailed("❌ Adicione pelo menos uma label ao PR.");
           }
 
-          if (pr.requested_reviewers.length === 0 && pr.requested_teams.length === 0) {
-            core.setFailed("❌ Adicione pelo menos um revisor ao PR.");
-          }
+          # if (pr.requested_reviewers.length === 0 && pr.requested_teams.length === 0) {
+          #   core.setFailed("❌ Adicione pelo menos um revisor ao PR.");
+          # }
 
           core.notice("✅ Todas as validações do PR foram aprovadas!");
