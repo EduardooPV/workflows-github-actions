@@ -5,7 +5,7 @@ on:
     types: [opened, edited, reopened, ready_for_review, labeled, synchronize]
 
 jobs:
-  lint-and-format:
+  test:
     runs-on: ubuntu-latest
 
     steps:
