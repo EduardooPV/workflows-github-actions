@@ -1,0 +1,14 @@
+name: PRLint
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, labeled, unlabeled, synchronize]
+
+jobs: 
+  prlint:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Check PR compliance with PRLint
+        uses: ahmadnassri/prlint-action@v3
+        with: 
+          config: .github/prlint.json

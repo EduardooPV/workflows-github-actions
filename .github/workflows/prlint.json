@@ -1,0 +1,24 @@
+{
+  "rules": {
+    "title": {
+      "pattern": "^(feat|fix|chore|docs|test):\\s.+",
+      "message": "O título do PR deve começar com 'feat:', 'fix:', 'chore:', 'docs:' ou 'test:'."
+    },
+    "body": {
+      "required": true,
+      "message": "O corpo do PR é obrigatório. Explique as mudanças realizadas."
+    },
+    "assignees": {
+      "min": 1,
+      "message": "Pelo menos um responsável (assignee) deve ser atribuído ao PR."
+    },
+    "labels": {
+      "min": 1,
+      "message": "Adicione pelo menos uma label ao PR."
+    },
+    "reviewers": {
+      "min": 1,
+      "message": "Pelo menos um revisor deve ser solicitado no PR."
+    }
+  }
+}
