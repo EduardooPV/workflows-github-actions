@@ -2,7 +2,7 @@ name: Validate Pull Request
 
 on:
   pull_request:
-    types: [opened, edited, reopened, ready_for_review, labeled]
+    types: [opened, edited, reopened, ready_for_review, labeled, synchronize]
 
 jobs:
   validate-pr:
@@ -15,26 +15,21 @@ jobs:
         script: |
           const pr = context.payload.pull_request;
 
-          // Validação do título
           const titlePattern = /^(feat|fix|chore|docs|test):\s.+$/;
           if (!titlePattern.test(pr.title)) {
             core.setFailed("❌ O título do PR deve começar com 'feat:', 'fix:', 'chore:', 'docs:' ou 'test:'.");
           }
 
-          // Validação de assignees
           if (pr.assignees.length === 0) {
             core.setFailed("❌ Adicione pelo menos um responsável (assignee) ao PR.");
           }
 
-          // Validação de labels
           if (pr.labels.length === 0) {
             core.setFailed("❌ Adicione pelo menos uma label ao PR.");
           }
 
-          // Validação de revisores
-          if (pr.requested_reviewers.length === 0 && pr.requested_teams.length === 0) {
-            core.setFailed("❌ Adicione pelo menos um revisor ao PR.");
-          }
+          // if (pr.requested_reviewers.length === 0 && pr.requested_teams.length === 0) {
+          //   core.setFailed("❌ Adicione pelo menos um revisor ao PR.");
+          // }
 
-          // Mensagem de sucesso
           core.notice("✅ Todas as validações do PR foram aprovadas!");

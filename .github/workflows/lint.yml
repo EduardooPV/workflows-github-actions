@@ -2,11 +2,7 @@ name: Lint and Format Check
 
 on:
   pull_request:
-    branches:
-      - staging
-  push:
-    branches:
-      - staging
+    types: [opened, edited, reopened, ready_for_review, labeled, synchronize]
 
 jobs:
   lint-and-format:
