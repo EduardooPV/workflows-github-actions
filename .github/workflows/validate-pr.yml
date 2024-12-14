@@ -15,36 +15,21 @@ jobs:
         script: |
           const pr = context.payload.pull_request;
 
-          let errors = []; // Armazena erros encontrados
-
-          // Validação do título
           const titlePattern = /^(feat|fix|chore|docs|test):\s.+$/;
           if (!titlePattern.test(pr.title)) {
-            errors.push("❌ O título do PR deve começar com 'feat:', 'fix:', 'chore:', 'docs:' ou 'test:'.");
+            core.setFailed("❌ O título do PR deve começar com 'feat:', 'fix:', 'chore:', 'docs:' ou 'test:'.");
           }
 
-          // Validação de assignees
           if (pr.assignees.length === 0) {
-            errors.push("❌ Adicione pelo menos um responsável (assignee) ao PR.");
+            core.setFailed("❌ Adicione pelo menos um responsável (assignee) ao PR.");
           }
 
-          // Validação de labels
           if (pr.labels.length === 0) {
-            errors.push("❌ Adicione pelo menos uma label ao PR.");
+            core.setFailed("❌ Adicione pelo menos uma label ao PR.");
           }
 
-          // Validação de revisores
           if (pr.requested_reviewers.length === 0 && pr.requested_teams.length === 0) {
-            errors.push("❌ Adicione pelo menos um revisor ao PR.");
+            core.setFailed("❌ Adicione pelo menos um revisor ao PR.");
           }
 
-          // Verifica se há erros
-          if (errors.length > 0) {
-            // Adiciona as mensagens de erro diretamente no PR como anotações
-            for (const error of errors) {
-              core.error(error);
-            }
-            core.setFailed("❌ O PR não atende aos requisitos.");
-          } else {
-            core.notice("✅ Todas as validações do PR foram aprovadas!");
-          }
+          core.notice("✅ Todas as validações do PR foram aprovadas!");
