@@ -41,5 +41,12 @@
     "vite-plugin-vue-devtools": "^7.6.5",
     "vitest": "^2.1.5",
     "vue-tsc": "^2.1.10"
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,vue}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
