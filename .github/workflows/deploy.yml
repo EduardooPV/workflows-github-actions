@@ -45,7 +45,8 @@ jobs:
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             vercel build
-            vercel --prod --token $VERCEL_TOKEN
+            DEPLOY_URL=$(vercel --prod --token $VERCEL_TOKEN)
+            echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
           else
             vercel build
             DEPLOY_URL=$(vercel --prebuilt --token $VERCEL_TOKEN)
@@ -58,7 +59,11 @@ jobs:
           DEPLOY_URL: ${{ env.DEPLOY_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          COMMENT="🚀 Deploy preview disponível em: $DEPLOY_URL"
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            COMMENT="🚀 Deploy em produção disponível em: $DEPLOY_URL"
+          else
+            COMMENT="🚀 Deploy preview disponível em: $DEPLOY_URL"
+          fi
           curl -s -H "Authorization: token $GITHUB_TOKEN" \
                -X POST \
                -d "{\"body\": \"$COMMENT\"}" \
