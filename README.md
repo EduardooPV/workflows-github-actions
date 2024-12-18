@@ -1,45 +1,66 @@
-# CI/CD Testing
+# CI/CD com GitHub Actions
 
-This template should help get you started developing with Vue 3 in Vite.
+Este repositório contém uma configuração de CI/CD utilizando GitHub Actions para automação do processo de build, análise, deploy e validação de Pull Requests (PRs).
+Foi realizada uma integração com o Vercel que permite deploy contínuo tanto para ambientes de Staging quanto de Produção.
 
-## Recommended IDE Setup
+## Visão Geral
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+O fluxo de trabalho do GitHub Actions foi projetado para:
 
-## Type Support for `.vue` Imports in TS
+- Construir a aplicação Vue.js sempre que um PR é aberto ou alterado.
+- Analisar o código com o CodeQL para garantir a segurança.
+- Validar PRs para garantir boas práticas (como título e labels).
+- Executar testes unitários com o Vitest.
+- Verificar linting e formatação utilizando ESLint e Prettier.
+- Deploy automático para Vercel em dois ambientes:
+  - **Staging** (quando um PR é enviado para a branch `staging`).
+  - **Produção** (quando há um push para a branch `main`).
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Estrutura do Workflow
 
-## Customize configuration
+O repositório possui as seguintes GitHub Actions configuradas:
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### 1. Build Vue Application (build)
 
-## Project Setup
+- **Disparada por**: Alterações nos PRs.
+- **Objetivo**: Construir a aplicação Vue.js após a instalação das dependências.
 
-```sh
-npm install
-```
+### 2. CodeQL Analysis (codeql-analyze)
 
-### Compile and Hot-Reload for Development
+- **Disparada por**: Alterações nos PRs.
+- **Objetivo**: Realizar a análise de segurança do código.
 
-```sh
-npm run dev
-```
+### 3. Deploy to Vercel (Production) (deploy-prd)
 
-### Type-Check, Compile and Minify for Production
+- **Disparada por**: Push para a branch `main`.
+- **Objetivo**: Realizar o deploy da aplicação para o ambiente de produção no Vercel.
 
-```sh
-npm run build
-```
+### 4. Deploy to Vercel (Staging) (deploy-staging)
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+- **Disparada por**: PR para a branch `staging`.
+- **Objetivo**: Realizar o deploy da aplicação para o ambiente de staging no Vercel.
 
-```sh
-npm run test:unit
-```
+### 5. Lint and Format Check (lint)
 
-### Lint with [ESLint](https://eslint.org/)
+- **Disparada por**: Alterações nos PRs.
+- **Objetivo**: Verificar se o código segue as regras de linting e formatação.
 
-```sh
-npm run lint
-```
+### 6. Run Tests with Vitest (test)
+
+- **Disparada por**: Alterações nos PRs.
+- **Objetivo**: Executar os testes unitários com Vitest.
+
+### 7. Validate Pull Request (validate-pr)
+
+- **Disparada por**: Alterações nos PRs.
+- **Objetivo**: Validar o PR quanto a boas práticas de naming, labels e assignees.
+
+## Variáveis e Secrets necessários
+
+Para que as ações de CI/CD funcionem corretamente, é necessário configurar as variáveis e segredos abaixo nas Settings do repositório em Secrets:
+
+- **Variáveis de Ambiente**:
+  - `VERCEL_TOKEN`: Token de autenticação do Vercel.
+  - `VERCEL_ORG_ID`: ID da organização no Vercel.
+  - `VERCEL_PROJECT_ID`: ID do projeto no Vercel.
+  - `GITHUB_TOKEN`: Token do GitHub (gerado automaticamente).
