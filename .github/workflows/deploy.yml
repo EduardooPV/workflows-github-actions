@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - staging
-
   push:
     branches:
       - main
@@ -43,7 +42,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          if [ "${{ github.base_ref }}" == "main" ]; then
             vercel build
             DEPLOY_URL=$(vercel --prod --token $VERCEL_TOKEN)
             echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
@@ -59,7 +58,7 @@ jobs:
           DEPLOY_URL: ${{ env.DEPLOY_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          if [ "${{ github.base_ref }}" == "main" ]; then
             COMMENT="🚀 Deploy em produção disponível em: $DEPLOY_URL"
           else
             COMMENT="🚀 Deploy preview disponível em: $DEPLOY_URL"
