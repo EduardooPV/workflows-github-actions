@@ -45,9 +45,9 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            vercel --prod --yes
+            vercel --prod --token $VERCEL_TOKEN
           else
-            DEPLOY_URL=$(vercel --prebuilt --yes)
+            DEPLOY_URL=$(vercel --prebuilt --token $VERCEL_TOKEN)
             echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
           fi
 
